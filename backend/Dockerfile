@@ -2,11 +2,11 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Install runtime dependencies
-COPY backend/requirements.txt ./
+COPY requirements.txt ./
 RUN pip install --no-cache-dir --default-timeout=1000 -r requirements.txt
 
 # Copy the backend source
-COPY backend/ .
+COPY . .
 
 ENV PYTHONPATH=/app
 EXPOSE 8001
