@@ -24,33 +24,14 @@ app = FastAPI(
 
 import os
 
-origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5175",
-    "http://127.0.0.1:5175",
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://frontend:80",
-    "http://frontend",
-]
-
-# Add frontend URL from environment (for production)
-frontend_url = os.getenv("FRONTEND_URL")
-if frontend_url:
-    origins.append(frontend_url)
-
-# Also allow https versions for production
-if frontend_url:
-    origins.append(frontend_url.replace("http://", "https://"))
-
+# In production, allow requests from Vercel
+# In development, allow localhost
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origin_regex=".*",  # Allow all origins temporarily to debug
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
-    max_age=3600,
 )
 
 predictor = HousePricePredictor()
