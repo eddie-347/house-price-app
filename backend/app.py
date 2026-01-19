@@ -40,12 +40,17 @@ frontend_url = os.getenv("FRONTEND_URL")
 if frontend_url:
     origins.append(frontend_url)
 
+# Also allow https versions for production
+if frontend_url:
+    origins.append(frontend_url.replace("http://", "https://"))
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    max_age=3600,
 )
 
 predictor = HousePricePredictor()
